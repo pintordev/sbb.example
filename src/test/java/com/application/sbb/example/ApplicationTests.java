@@ -13,27 +13,28 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class ApplicationTests {
-	@Autowired
-	private QuestionRepository questionRepository;
+    @Autowired
+    private QuestionRepository questionRepository;
 
-	@Autowired
-	private AnswerRepository answerRepository;
+    @Autowired
+    private AnswerRepository answerRepository;
 
-	@Test
-	void testJPA() {
-		Optional<Question> oq = this.questionRepository.findById(2);
-		assertTrue(oq.isPresent());
-		Question q = oq.get();
+    @Transactional
+    @Test
+    void testJpa() {
+       Optional<Question> oq = this.questionRepository.findById(4);
+       assertTrue(oq.isPresent());
+       Question q = oq.get();
 
-		Answer a = new Answer();
-		a.setContent("네 자동으로 생성됩니다.");
-		a.setQuestion(q);
-		a.setCreateDate(LocalDateTime.now());
-		this.answerRepository.save(a);
-	}
+       List<Answer> answerList = q.getAnswerList();
+
+       assertEquals(1, answerList.size());
+       assertEquals("네 자동으로 생성됩니다.", answerList.get(0).getContent());
+    }
 
 }
