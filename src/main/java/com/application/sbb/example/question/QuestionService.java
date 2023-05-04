@@ -24,9 +24,9 @@ public class QuestionService {
     }
 
     public Question getQuestion(Integer id) {
-        Optional<Question> oq = this.questionRepository.findById(id);
-        if (oq.isPresent()) {
-            return oq.get();
+        Optional<Question> question = this.questionRepository.findById(id);
+        if (question.isPresent()) {
+            return question.get();
         } else {
             throw new DataNotFoundException("question not found");
         }
